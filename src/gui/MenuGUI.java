@@ -1,7 +1,6 @@
 package gui;
 
 import api.Message;
-import api.RecipeFinderController;
 import api.RecipeObject;
 import database.*;
 import javafx.application.Platform;
@@ -49,7 +48,7 @@ public class MenuGUI {
     private JTabbedPane tp;
     private JOptionPane op;
     private ButtonPanel bp1;
-    private JPanel main1, main2, main3, sub1, sub2, sub3;
+    private JPanel main1, main2, sub1, sub2;
     private String s1 = "Inventory ";
     private String s2 = "Recipe ";
     private String s3 = "Menu ";
@@ -59,7 +58,6 @@ public class MenuGUI {
     private ArrayList<RecipeObject> input, menu;
     private ArrayList<CheckPanel> cpa;
     private ArrayList<SpinnerPanel> spa;
-    private ArrayList<JComponent> jpa;
     private ButtonSet recipeSet, menuSet;
     private Write writeFile;
 
@@ -90,10 +88,7 @@ public class MenuGUI {
             bp1 = new ButtonPanel(ar, 8);
             cpa = new ArrayList<>();
             spa = new ArrayList<>();
-            jpa = new ArrayList<>();
             sub1 = new JPanel();
-            sub2 = new JPanel();
-            sub3 = new JPanel();
             recipeSet = new ButtonSet("Generate Recipes", "Generate Menu",
                     "Clear Selections");
             menuSet = new ButtonSet("Rename Menu", "Save Menu", "Print Menu");
@@ -158,10 +153,18 @@ public class MenuGUI {
     synchronized public void addTabs() {
         addArray(spa, sub1);
         addArray(cpa, sub2);
-        addArray(jpa, sub3);
     }
 
     synchronized public void setAction() throws Exception {
+
+        recipeSet.addFunction(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("No idea what's going on...");
+                        //Clears checkbox selections.
+                        setAllFalse();
+                    }
+                }, 2);
 
         recipeSet.addFunction(
                 new ActionListener() {
@@ -193,10 +196,9 @@ public class MenuGUI {
             }
         }
 
-        synchronized public void setArrays (ArrayList a, ArrayList b, ArrayList c){
+        synchronized public void setArrays (ArrayList a, ArrayList b){
             spa = a;
             cpa = b;
-            jpa = c;
         }
 
         private void setTabs () {
@@ -208,25 +210,20 @@ public class MenuGUI {
             sub1.setLayout(new GridLayout(10, 1, 5, 5));
             getInventory(sub1);
             main1.add(sub1);
-
             //SecondTab
+
             tp.addTab(s2 + s3, main2 = new JPanel());//main2 = new JPanel());
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/api/recipeChooser.fxml"));
+                //Pane recipePane = FXMLLoader.load(getClass().getResource("/api/recipeChooser.fxml"));
                 Scene scene = new Scene(root);
+                //primaryStage.show();
                 JFXPanel fxPanel = new JFXPanel();
                 fxPanel.setScene(scene);
                 main2.add(fxPanel);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            //ThirdTab
-            tp.addTab(s3 + s3, main3 = new JPanel());
-            main3.setLayout(new GridLayout(2, 3));
-            main3.setBorder(new TitledBorder(s3 + s3));
-            main3.add(menuSet);
-            main3.add(sub3);
             f.add(tp);
         }
 

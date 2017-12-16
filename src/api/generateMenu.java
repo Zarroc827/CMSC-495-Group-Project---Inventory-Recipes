@@ -2,20 +2,30 @@ package api;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class generateMenu extends JFrame{
+public class generateMenu extends JFrame implements ActionListener {
 
-    JFrame menuFrame = new JFrame();
+    JFrame menuFrame;
     JPanel tempPanel;
     JTextArea ItemTitle;
     DecimalFormat df = new DecimalFormat("#.##");
     ArrayList<String> descriptions = new ArrayList<String>();
     private Random randomGenerator;
+
+    //Printing initialization
+    JPanel printPanel;
+    Button printButton;
 
 
 
@@ -56,7 +66,36 @@ public class generateMenu extends JFrame{
         frame.add(tempPanel);
     }
 
+    public void addPrintButton(JFrame frame){
+        menuFrame = frame;
+        printPanel = new JPanel(new BorderLayout());
+        printButton = new Button("Print Menu");
+        printButton.addActionListener(this);
+        printPanel.add(printButton);
+        printPanel.setVisible(true);
+        frame.add(printPanel);
+    }
 
+    public void actionPerformed(ActionEvent e) {
+        printFrame();
+    }
+
+    public void printFrame(){
+        PrinterJob printJob = PrinterJob.getPrinterJob();
+        PageFormat formatingPrint = printJob.defaultPage();
+        formatingPrint.setOrientation(PageFormat.LANDSCAPE);
+        PageFormat pformat = printJob.pageDialog(formatingPrint);
+        if (formatingPrint != pformat) {
+            printJob.setPrintable(new Printer(menuFrame), pformat);
+            if (printJob.printDialog()) {
+                try{
+                    printJob.print();
+                }catch (Exception e){
+
+                }
+            }
+        }
+    }
 
 
 }

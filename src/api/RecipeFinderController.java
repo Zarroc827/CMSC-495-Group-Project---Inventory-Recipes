@@ -10,11 +10,13 @@ import javafx.scene.layout.Pane;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Name: Dustin Summers
@@ -40,6 +42,7 @@ public class RecipeFinderController {
     private Message message = new Message();
     private ArrayList<RecipeObject> recipes;
     private ArrayList<IngredientObject> ingredients;
+    private List<String> menuList = new ArrayList<>();
     private final String APP_ID = "342f012e&";
     private final String APP_KEY = "759ed5ecf4b779bded17abc45600d7e8&";
 
@@ -236,17 +239,36 @@ public class RecipeFinderController {
     @FXML
     private void generateMenu(){
         System.out.println("Generate menu pressed!");
+        System.out.println("Current menu list is: " + menuList);
+
+        for(int i = 0; i<recipes.size(); i++){
+            if(recipes.get(i).isCheckBoxChecked()) {
+                menuList.add(recipes.get(i).getRecipeTitle());
+            }
+        }
+
+        //Prevents Dupes
+        menuList = menuList.stream().distinct().collect(Collectors.toList());
+
         myMenu = new generateMenu();
         myMenu.setVisible(true);
         myMenu.setSize(400,600);
         myMenu.setLayout(new FlowLayout());
 
-        for(int i = 0; i<recipes.size(); i++){
-            if(recipes.get(i).isCheckBoxChecked()) {
-                myMenu.addItem(myMenu, recipes.get(i).getRecipeTitle());
-            }
+
+
+        for(int i = 0; i<menuList.size(); i++){
+            myMenu.addItem(myMenu, menuList.get(i));
         }
+        myMenu.addPrintButton(myMenu);
+        myMenu.validate();
 
 
+    }
+
+    @FXML
+    private void clearMenu(){
+        System.out.println("Clear menu pressed!");
+        menuList.clear();
     }
 }
