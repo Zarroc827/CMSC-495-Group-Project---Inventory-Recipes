@@ -48,7 +48,7 @@ public class MenuGUI {
     private JTabbedPane tp;
     private JOptionPane op;
     private ButtonPanel bp1;
-    private JPanel main1, main2, main3, sub1, sub2, sub3;
+    private JPanel main1, main2, sub1, sub2;
     private String s1 = "Inventory ";
     private String s2 = "Recipe ";
     private String s3 = "Menu ";
@@ -58,7 +58,6 @@ public class MenuGUI {
     private ArrayList<RecipeObject> input, menu;
     private ArrayList<CheckPanel> cpa;
     private ArrayList<SpinnerPanel> spa;
-    private ArrayList<JComponent> jpa;
     private ButtonSet recipeSet, menuSet;
     private Write writeFile;
 
@@ -89,10 +88,7 @@ public class MenuGUI {
             bp1 = new ButtonPanel(ar, 8);
             cpa = new ArrayList<>();
             spa = new ArrayList<>();
-            jpa = new ArrayList<>();
             sub1 = new JPanel();
-            sub2 = new JPanel();
-            sub3 = new JPanel();
             recipeSet = new ButtonSet("Generate Recipes", "Generate Menu",
                     "Clear Selections");
             menuSet = new ButtonSet("Rename Menu", "Save Menu", "Print Menu");
@@ -157,7 +153,6 @@ public class MenuGUI {
     synchronized public void addTabs() {
         addArray(spa, sub1);
         addArray(cpa, sub2);
-        addArray(jpa, sub3);
     }
 
     synchronized public void setAction() throws Exception {
@@ -166,7 +161,7 @@ public class MenuGUI {
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("No idea what's going on...");
-                        //cpa.get(0).setWords("This occured");
+                        //Clears checkbox selections.
                         setAllFalse();
                     }
                 }, 2);
@@ -201,10 +196,9 @@ public class MenuGUI {
             }
         }
 
-        synchronized public void setArrays (ArrayList a, ArrayList b, ArrayList c){
+        synchronized public void setArrays (ArrayList a, ArrayList b){
             spa = a;
             cpa = b;
-            jpa = c;
         }
 
         private void setTabs () {
@@ -230,16 +224,6 @@ public class MenuGUI {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //main2.setBorder(new TitledBorder(s2 + s3));
-            //sub2.setLayout(new GridLayout(2, 10));
-            //main2.add(recipeSet);
-            //main2.add(sub2);
-            //ThirdTab
-            tp.addTab(s3 + s3, main3 = new JPanel());
-            main3.setLayout(new GridLayout(2, 3));
-            main3.setBorder(new TitledBorder(s3 + s3));
-            main3.add(menuSet);
-            main3.add(sub3);
             f.add(tp);
         }
 
