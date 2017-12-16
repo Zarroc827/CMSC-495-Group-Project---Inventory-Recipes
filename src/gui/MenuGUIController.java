@@ -1,5 +1,6 @@
 package gui;
 
+import api.RecipeFinderController;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
@@ -38,7 +39,6 @@ public class MenuGUIController {
                 swingNode.setContent(scrollPane);
                 container.getTop().setVisible(false);
                 System.out.println("MENU GUI INITIALIZED");
-
             }
         });
     }
