@@ -17,6 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Name: Dustin Summers
@@ -38,7 +39,7 @@ public class RecipeFinderController {
 
     private Message message = new Message();
     private ArrayList<RecipeObject> recipes;
-    private ArrayList<String> menuList = new ArrayList<>();
+    private List<String> menuList = new ArrayList<>();
     private final String APP_ID = "342f012e&";
     private final String APP_KEY = "759ed5ecf4b779bded17abc45600d7e8&";
 
@@ -158,6 +159,9 @@ public class RecipeFinderController {
                 menuList.add(recipes.get(i).getRecipeTitle());
             }
         }
+
+        //Prevents Dupes
+        menuList = menuList.stream().distinct().collect(Collectors.toList());
 
         myMenu = new generateMenu();
         myMenu.setVisible(true);
